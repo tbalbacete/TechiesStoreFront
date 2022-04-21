@@ -1,31 +1,79 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TechiesStoreFront.Server.Data;
+using TechiesStoreFront.Server.Models;
 using TechiesStoreFront.Shared.Models.TransactionModels;
 
 namespace TechiesStoreFront.Server.Services.Transaction
 {
     public class TransactionService : ITransactionService
     {
-        public Task<bool> CreateTransactionAsync(TransactionCreate model)
+        private readonly ApplicationDbContext _context;
+        private string _userId;
+
+        public TransactionService(ApplicationDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task<bool> DeleteTransactionAsync(int transactionId)
+        public async Task<bool> CreateTransactionAsync(TransactionCreate model)
         {
-            throw new NotImplementedException();
+            var transactionEntity = new TransactionEntity
+            {
+                UserId = _userId,
+                AmountSpent = model.AmountSpent
+            };
+
+            _context.Transactions.Add(transactionEntity);
+            var numberofChanges = await _context.SaveChangesAsync();
+
+            return numberofChanges == 1;
         }
 
-        public Task<IEnumerable<TransactionListItem>> GetAllTransactionsAsync()
+
+        public async Task<IEnumerable<TransactionListItem>> GetAllTransactionsAsync()
         {
-            throw new NotImplementedException();
+            var transactionQuery = _context.Transactions.Where(t => t.UserId == _userId)
+                .Select(t => new TransactionListItem
+                {
+                    Id = t.Id,
+                    AmountSpent = t.AmountSpent,
+                    DateOfTransaction = t.DateofTransaction
+                });
+
+            return await transactionQuery.ToListAsync();
         }
 
-        public Task<TransactionDetail> GetTransactionByIdAsync(int transactionId)
+        public async Task<TransactionDetail> GetTransactionByIdAsync(int transactionId)
         {
-            throw new NotImplementedException();
+            var transactionEntity = await _context.Transactions.FirstOrDefaultAsync(t => t.Id == transactionId && t.UserId == _userId);
+
+            if (transactionEntity == null) return null;
+
+            var transactionDetail = new TransactionDetail
+            {
+                Id = transactionEntity.Id,
+                AmountSpent = transactionEntity.AmountSpent,
+                DateOfTransaction = transactionEntity.DateofTransaction
+            };
+
+            return transactionDetail;
         }
+
+        public async Task<bool> DeleteTransactionAsync(int transactionId)
+        {
+            var transactionEntity = await _context.Transactions.FindAsync(transactionId);
+
+            //if (transactionEntity?.UserId != _userId) return false;
+
+            _context.Transactions.Remove(transactionEntity);
+
+            return await _context.SaveChangesAsync() == 1;
+        }
+
+        public void SetUserId(string userId) => _userId = userId;
     }
 }

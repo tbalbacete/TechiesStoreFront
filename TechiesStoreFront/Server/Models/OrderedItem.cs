@@ -6,18 +6,17 @@ using System.Threading.Tasks;
 
 namespace TechiesStoreFront.Server.Models
 {
-    public class OrderedItem
+    public class OrderedItemEntity
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
         public int TransactionId { get; set; }
-        public virtual Transaction Transaction { get; set; }
+        public virtual TransactionEntity Transaction { get; set; }
 
-        [Required]
         public int ItemOrderedId { get; set; }
-        public virtual Product Product { get; set; }
+        public virtual ProductEntity Product { get; set; }
 
         public int QuantityOrdered { get; set; }
     }

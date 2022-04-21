@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TechiesStoreFront.Server.Models
 {
-    public class Product
+    public class ProductEntity
     {
         [Key]
         public int Id { get; set; }
@@ -25,6 +25,6 @@ namespace TechiesStoreFront.Server.Models
 
         [Required]
         public int CategoryId { get; set; }
-        public virtual Category Category { get; set; }
+        public virtual CategoryEntity Category { get; set; }
     }
 }

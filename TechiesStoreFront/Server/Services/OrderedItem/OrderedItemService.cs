@@ -1,26 +1,67 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TechiesStoreFront.Server.Data;
+using TechiesStoreFront.Server.Models;
 using TechiesStoreFront.Shared.Models.OrderedItemModels;
 
 namespace TechiesStoreFront.Server.Services.OrderedItem
 {
     public class OrderedItemService : IOrderedItemService
     {
-        public Task<bool> CreateOrderedItemAsync(OrderedItemCreate model)
+        private readonly ApplicationDbContext _context;
+        private int _transactionId;
+        private int _itemId;
+
+        public OrderedItemService(ApplicationDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task<IEnumerable<OrderedItemListItem>> GetAllOrderedItemsAsync()
+        public async Task<bool> CreateOrderedItemAsync(OrderedItemCreate model)
         {
-            throw new NotImplementedException();
+            var orderedItemEntity = new OrderedItemEntity
+            {
+                TransactionId = _transactionId,
+                ItemOrderedId = _itemId,
+                QuantityOrdered = model.QuantityOrdered
+            };
+
+            _context.OrderedItems.Add(orderedItemEntity);
+            var numberofChanges = await _context.SaveChangesAsync();
+
+            return numberofChanges == 1;
         }
 
-        public Task<OrderedItemDetail> GetOrderedItemByIdAsync(int itemId)
+        public async Task<IEnumerable<OrderedItemListItem>> GetAllOrderedItemsAsync()
         {
-            throw new NotImplementedException();
+            var orderedItemQuery = _context.OrderedItems.Select(i => new OrderedItemListItem
+            {
+                TransactionId = i.TransactionId,
+                ItemOrderedId = i.ItemOrderedId,
+                QuantityOrdered = i.QuantityOrdered
+            });
+
+            return await orderedItemQuery.ToListAsync();
+        }
+
+        public async Task<OrderedItemDetail> GetOrderedItemByIdAsync(int itemId)
+        {
+            var orderedItemEntity = await _context.OrderedItems.FirstOrDefaultAsync(i => i.Id == itemId);
+
+            if (orderedItemEntity == null) return null;
+
+            var detail = new OrderedItemDetail
+            {
+                Id = orderedItemEntity.Id,
+                TransactionId = orderedItemEntity.TransactionId,
+                ItemOrderedId = orderedItemEntity.ItemOrderedId,
+                QuantityOrdered = orderedItemEntity.QuantityOrdered
+            };
+
+            return detail;
         }
     }
 }

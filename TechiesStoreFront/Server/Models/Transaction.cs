@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 namespace TechiesStoreFront.Server.Models
 {
-    public class Transaction
+    public class TransactionEntity
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
-        public int UserId { get; set; }
-        public virtual ApplicationUser User { get; set; }
+        public string UserId { get; set; }
 
         [Required]
         public double AmountSpent { get; set; }

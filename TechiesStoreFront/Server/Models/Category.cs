@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TechiesStoreFront.Server.Models
 {
-    public class Category
+    public class CategoryEntity
     {
         [Key]
         public int Id { get; set; }

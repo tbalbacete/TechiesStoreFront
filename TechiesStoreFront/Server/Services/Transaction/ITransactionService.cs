@@ -12,5 +12,6 @@ namespace TechiesStoreFront.Server.Services.Transaction
         Task<IEnumerable<TransactionListItem>> GetAllTransactionsAsync();
         Task<TransactionDetail> GetTransactionByIdAsync(int transactionId);
         Task<bool> DeleteTransactionAsync(int transactionId);
+        void SetUserId(string userId);
     }
 }

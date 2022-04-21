@@ -2,35 +2,93 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TechiesStoreFront.Server.Data;
 using TechiesStoreFront.Shared.Models.ProductModels;
+using TechiesStoreFront.Server.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace TechiesStoreFront.Server.Services.Product
 {
     public class ProductService : IProductService
     {
-        public Task<bool> CreateProductAsync(ProductCreate model)
+        private readonly ApplicationDbContext _context;
+
+        public ProductService(ApplicationDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task<bool> DeleteProductAsync(int productId)
+        public async Task<bool> CreateProductAsync(ProductCreate model)
         {
-            throw new NotImplementedException();
+            var productEntity = new ProductEntity
+            {
+                Name = model.Name,
+                QuantityInStock = model.QuantityInStock,
+                Description = model.Description,
+                Price = model.Price,
+                CategoryId = model.CategoryId
+            };
+
+            _context.Products.Add(productEntity);
+            var numberofChanges = await _context.SaveChangesAsync();
+
+            return numberofChanges == 1;
         }
 
-        public Task<IEnumerable<ProductListItem>> GetAllProductsAsync()
+
+        public async Task<IEnumerable<ProductListItem>> GetAllProductsAsync()
         {
-            throw new NotImplementedException();
+            var productQuery = _context.Products.Select(p => new ProductListItem
+            {
+                Name = p.Name,
+                QuantityInStock = p.QuantityInStock,
+                Description = p.Description,
+                Price = p.Price
+            });
+
+            return await productQuery.ToListAsync();
         }
 
-        public Task<ProductDetail> GetProductByIdAsync(int productId)
+        public async Task<ProductDetail> GetProductByIdAsync(int productId)
         {
-            throw new NotImplementedException();
+            var productEntity = await _context.Products.FirstOrDefaultAsync(p => p.Id == productId);
+
+            if(productEntity == null) return null;
+            
+            var product = new ProductDetail
+            {
+                Id = productEntity.Id,
+                Name = productEntity.Name,
+                QuantityInStock = productEntity.QuantityInStock,
+                Description = productEntity.Description,
+                Price = productEntity.Price,
+                CategoryId = productEntity.Category.Id,
+                CategoryName = productEntity.Category.Name
+            };
+
+            return product;
         }
 
-        public Task<bool> UpdateProductAsync(ProductEdit model)
+        public async Task<bool> UpdateProductAsync(ProductEdit model)
         {
-            throw new NotImplementedException();
+            if (model == null) return false;
+
+            var productEntity = await _context.Products.FindAsync(model.Id);
+
+            productEntity.Name = model.Name;
+            productEntity.QuantityInStock = model.QuantityInStock;
+            productEntity.Description = model.Description;
+            productEntity.Price = model.Price;
+            productEntity.CategoryId = model.CategoryId;
+
+            return await _context.SaveChangesAsync() == 1;
+        }
+        public async Task<bool> DeleteProductAsync(int productId)
+        {
+            var productEntity = await _context.Products.FindAsync(productId);
+
+            _context.Products.Remove(productEntity);
+            return await _context.SaveChangesAsync() == 1;
         }
     }
 }
