@@ -11,5 +11,7 @@ namespace TechiesStoreFront.Server.Services.OrderedItem
         Task<bool> CreateOrderedItemAsync(OrderedItemCreate model);
         Task<IEnumerable<OrderedItemListItem>> GetAllOrderedItemsAsync();
         Task<OrderedItemDetail> GetOrderedItemByIdAsync(int itemId);
+        void SetTransactionId(int transactionId);
+        void SetProductId(int productId);
     }
 }

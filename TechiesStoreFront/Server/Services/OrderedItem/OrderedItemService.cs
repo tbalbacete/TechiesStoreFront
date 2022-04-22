@@ -63,5 +63,8 @@ namespace TechiesStoreFront.Server.Services.OrderedItem
 
             return detail;
         }
+
+        public void SetTransactionId(int transactionId) => _transactionId = transactionId;
+        public void SetProductId(int productId) => _itemId = productId;
     }
 }

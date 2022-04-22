@@ -69,6 +69,22 @@ namespace TechiesStoreFront.Server.Services.Product
             return product;
         }
 
+        public async Task<IEnumerable<ProductDetail>> GetAllProductsByCategoryIdAsync(int categoryId)
+        {
+            var productQuery = _context.Products.Where(p => p.CategoryId == categoryId).Select(p => new ProductDetail
+            {
+                Id = p.Id,
+                Name = p.Name,
+                QuantityInStock = p.QuantityInStock,
+                Description = p.Description,
+                Price = p.Price,
+                CategoryId = p.Category.Id,
+                CategoryName = p.Category.Name
+            });
+
+            return await productQuery.ToListAsync();
+        }
+
         public async Task<bool> UpdateProductAsync(ProductEdit model)
         {
             if (model == null) return false;
