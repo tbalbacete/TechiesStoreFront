@@ -1,0 +1,75 @@
+﻿@page "/product/create"
+@using TechiesStoreFront.Shared.Models.ProductModels
+@using TechiesStoreFront.Shared.Models.CategoryModels
+@inject PublicClient PublicClient
+@inject NavigationManager navigation
+  
+<h3>Create</h3>
+
+@if (errorMesssage != null)
+{
+    <h4 class="text-danger">@errorMesssage</h4>
+}
+
+@if (categories == null)
+{
+    <p>Loading Categories...</p>
+}
+
+else
+{
+    <div class="container">
+        <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="form-group">
+                <label>Product Name</label>
+                <InputText class="form-control" @bind-Value="model.Name" />
+            </div>
+
+            <div class="form-group">
+                <label>Quantity In Stock</label>
+                <input type="number" class="form-control" @bind-value="model.QuantityInStock" />"
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <InputTextArea class="form-control" @bind-Value="model.Description" />"
+            </div>
+            <div class="form-group">
+                <label>Price</label>
+                <input type="number" class="form-control" @bind-value="model.Price" />"
+            </div>
+            <InputSelect class="form-control" @bind-Value="model.CategoryId">
+                @foreach (var category in categories)
+                    {
+                    <option value="@category.Id">@category.Name</option>
+                    }
+            </InputSelect>
+            <button type="submit" clas="btn btn-primary btn-block mt-5">Submit</button>
+        </EditForm>
+    </div>
+}
+
+@code {
+    private ProductCreate model = new();
+    private IEnumerable<CategoryListItem> categories;
+    private string errorMesssage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await PublicClient.Client.GetFromJsonAsync<IEnumerable<CategoryListItem>> ("api/Category");
+    }
+
+    private async void HandleSubmit()
+    {
+        var createProduct = await PublicClient.Client.PostAsJsonAsync<ProductCreate>("/api/Product", model);
+        if (createProduct.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo("/product/index");
+        }
+        else
+        {
+            errorMesssage = "Could not create the product right now. Please try again later.";
+        }
+    }
+}

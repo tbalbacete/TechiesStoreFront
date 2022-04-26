@@ -1,0 +1,41 @@
+﻿@page "/category/create"
+@inject PublicClient PublicClient 
+@using TechiesStoreFront.Shared.Models.CategoryModels
+@inject NavigationManager navigation
+  
+<h3>Create A Category</h3>
+
+@if (errorMessage != null)
+{
+    <h4 class="text-danger">@errorMessage</h4>
+}
+
+<div class="container">
+    <EditForm Model="@model" OnValidSubmit="@HandleSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-group">
+            <label>Name</label>
+            <InputText class="form-control" @bind-Value="model.Name" />
+            <button type="submit" class="btn btn-primary btn-block mt-5">Submit</button>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    private CategoryCreate model = new();
+    private string errorMessage;
+
+    private async void HandleSubmit()
+    {
+        var createCat = await PublicClient.Client.PostAsJsonAsync<CategoryCreate>("/api/category", model);
+        if (createCat.IsSuccessStatusCode)
+        {
+            navigation.NavigateTo("/category/index");
+        }
+        else
+        {
+            errorMessage = "Could not create your category right now. Please try again later.";
+        }
+    }
+}

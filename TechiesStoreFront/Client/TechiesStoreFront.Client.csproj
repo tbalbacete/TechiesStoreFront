@@ -17,4 +17,8 @@
     <ProjectReference Include="..\Shared\TechiesStoreFront.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Transaction\" />
+  </ItemGroup>
+
 </Project>

@@ -40,6 +40,7 @@ namespace TechiesStoreFront.Server.Services.Product
         {
             var productQuery = _context.Products.Select(p => new ProductListItem
             {
+                Id = p.Id,
                 Name = p.Name,
                 QuantityInStock = p.QuantityInStock,
                 Description = p.Description,

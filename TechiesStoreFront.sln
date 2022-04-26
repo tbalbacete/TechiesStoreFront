@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32413.511
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechiesStoreFront.Server", "TechiesStoreFront\Server\TechiesStoreFront.Server.csproj", "{4F03F3C2-0AD0-4C60-A0F5-089A329E0916}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechiesStoreFront.Server", "TechiesStoreFront\Server\TechiesStoreFront.Server.csproj", "{4F03F3C2-0AD0-4C60-A0F5-089A329E0916}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechiesStoreFront.Client", "TechiesStoreFront\Client\TechiesStoreFront.Client.csproj", "{2C4D077A-23E5-4110-AE6F-689C2E1B703C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechiesStoreFront.Client", "TechiesStoreFront\Client\TechiesStoreFront.Client.csproj", "{2C4D077A-23E5-4110-AE6F-689C2E1B703C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechiesStoreFront.Shared", "TechiesStoreFront\Shared\TechiesStoreFront.Shared.csproj", "{4E8CBFE5-1087-4FEF-9B1B-1C1504D42D49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechiesStoreFront.Shared", "TechiesStoreFront\Shared\TechiesStoreFront.Shared.csproj", "{4E8CBFE5-1087-4FEF-9B1B-1C1504D42D49}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

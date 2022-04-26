@@ -1,0 +1,44 @@
+﻿@page "/Product/index"
+@using TechiesStoreFront.Shared.Models.ProductModels
+@inject PublicClient PublicClient
+
+<h3>Index</h3>
+<a href="/product/create">Create a Product</a>
+
+@if (_products == null)
+{
+    <p>Attempting to load products...</p>
+}
+else 
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in _products)
+                {
+                    <tr>
+                        <td><strong>@product.Name</strong></td>
+                        <td>
+                            <a href=@($"product/{product.Id}")>Details</a> |
+                            <a href=@($"product/edit/{product.Id}")>Edit</a> |
+                            <a href=@($"product/delete/{product.Id}")>Delete</a>
+                        </td>
+                    </tr>
+                }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IEnumerable<ProductListItem> _products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _products = await PublicClient.Client.GetFromJsonAsync<List<ProductListItem>>("api/Product");
+    }
+}
