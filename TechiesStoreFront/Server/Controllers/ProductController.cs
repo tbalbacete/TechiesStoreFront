@@ -48,9 +48,9 @@ namespace TechiesStoreFront.Server.Controllers
 
         // GET: api/Product/category/5
         [HttpGet("category/{id}")]
-        public async Task<List<ProductDetail>> ProductsByCategory(int categoryId)
+        public async Task<List<ProductDetail>> ProductsByCategory(int id)
         {
-            var products = await _productService.GetAllProductsByCategoryIdAsync(categoryId);
+            var products = await _productService.GetAllProductsByCategoryIdAsync(id);
 
             return products.ToList();
         }

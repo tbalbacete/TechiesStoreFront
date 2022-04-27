@@ -1,5 +1,55 @@
-﻿<h3>Category</h3>
+﻿@page "/product/category/{CategoryId:int}"
+@using TechiesStoreFront.Shared.Models.ProductModels
+@inject PublicClient PublicClient
+
+@if (_products == null)
+{
+    <p>Loading Items...</p>
+}
+else
+{
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        @foreach (var product in _products)
+        {
+            <div class="container">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">@product.Name</h3>
+                    <div class="row">
+                        <div class="col-lg-5 col-md-5 col-sm-6">
+                            <div class="white-box text-center"><img src="https://via.placeholder.com/430x600/00CED1/000000" class="img-responsive"></div>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-sm-6">
+                            <h4 class="box-title mt-5">Product description</h4>
+                            <p>@product.Description</p>
+                            <h2 class="mt-5">
+                                @product.Price@*<small class="text-success">(36%off)</small>*@
+                            </h2>
+                            <button class="btn btn-dark btn-rounded mr-1" data-toggle="tooltip" title="" data-original-title="Add to cart">
+                                <i class="fa fa-shopping-cart"></i>
+                            </button>
+                            <button class="btn btn-primary btn-rounded">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+}
+
+
 
 @code {
+    [Parameter]
+    public int CategoryId { get; set; }
+    public IEnumerable<ProductDetail> _products { get; set; }
 
+    protected override async Task OnInitializedAsync()
+    {
+        _products = await PublicClient.Client.GetFromJsonAsync<List<ProductDetail>>($"/api/Product/Category/{CategoryId}");
+    }
+    protected override async Task OnParametersSetAsync()
+    {
+        _products = await PublicClient.Client.GetFromJsonAsync<List<ProductDetail>>($"/api/Product/Category/{CategoryId}");
+    }
 }
