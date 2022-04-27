@@ -16,12 +16,11 @@ namespace TechiesStoreFront.Server.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
         private readonly IProductService _productService;
 
-        public ProductController(ApplicationDbContext context)
+        public ProductController(IProductService productService)
         {
-            _context = context;
+            _productService = productService;
         }
 
         // GET: api/Product
@@ -104,9 +103,9 @@ namespace TechiesStoreFront.Server.Controllers
             return Ok();
         }
 
-        private bool ProductEntityExists(int id)
-        {
-            return _context.Products.Any(e => e.Id == id);
-        }
+        //private bool ProductEntityExists(int id)
+        //{
+        //    return _context.Products.Any(e => e.Id == id);
+        //}
     }
 }
