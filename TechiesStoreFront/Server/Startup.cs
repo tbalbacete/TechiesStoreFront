@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using System.Linq;
 using TechiesStoreFront.Server.Data;
 using TechiesStoreFront.Server.Models;
+using TechiesStoreFront.Server.Services.Cart;
 using TechiesStoreFront.Server.Services.Category;
 using TechiesStoreFront.Server.Services.OrderedItem;
 using TechiesStoreFront.Server.Services.Product;
@@ -34,6 +35,7 @@ namespace TechiesStoreFront.Server
             services.AddScoped<ITransactionService, TransactionService>();
             services.AddScoped<IOrderedItemService, OrderedItemService>();
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ICartService, CartService>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(

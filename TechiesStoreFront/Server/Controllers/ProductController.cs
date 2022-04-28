@@ -34,16 +34,16 @@ namespace TechiesStoreFront.Server.Controllers
 
         // GET: api/Product/5
         [HttpGet("{id}")]
-        public async Task<ActionResult> Product(int id)
+        public async Task<ProductDetail> Product(int id)
         {
             var product = await _productService.GetProductByIdAsync(id);
 
             if (product == null)
             {
-                return NotFound();
+                return null;
             }
 
-            return Ok(product);
+            return product;
         }
 
         // GET: api/Product/category/5

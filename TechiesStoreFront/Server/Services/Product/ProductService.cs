@@ -52,7 +52,7 @@ namespace TechiesStoreFront.Server.Services.Product
 
         public async Task<ProductDetail> GetProductByIdAsync(int productId)
         {
-            var productEntity = await _context.Products.FirstOrDefaultAsync(p => p.Id == productId);
+            var productEntity = await _context.Products.Include(nameof(Category)).FirstOrDefaultAsync(p => p.Id == productId);
 
             if(productEntity == null) return null;
             
