@@ -1,0 +1,52 @@
+﻿@inject Blazored.LocalStorage.ILocalStorageService ProtectedLocalStore
+@using TechiesStoreFront.Shared.Models.Cart 
+
+@if (isLoaded)
+{
+    <CascadingValue Value="@this">
+        @ChildContent
+    </CascadingValue>
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+    public CartModel ShoppingCart { get; set; }
+    bool isLoaded;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        //Retrieve the cart
+        ShoppingCart = await ProtectedLocalStore.GetItemAsync<CartModel>("MyShoppingCart");
+
+        // If the Cart is not there or empty...
+        if (ShoppingCart == null || ShoppingCart.Items.Count == 0)
+        {
+            // Create a new Cart
+            ShoppingCart = new CartModel();
+        }
+        else
+        {
+            // otherwise, check to see if the Cart has expired (default is 30 seconds)
+            if (DateTime.Now > ShoppingCart.LastAccessed.AddSeconds(ShoppingCart.TimeToLiveInSeconds))
+            {
+                // Expired. Create a new cart.
+                ShoppingCart = new CartModel();
+            }
+        }
+        ShoppingCart.LastAccessed = DateTime.Now;
+        isLoaded = true;
+    }
+
+    public async Task SaveChangesAsync()
+    {
+        // Set the time stamp to current time and save to local storage (in the browser).
+        ShoppingCart.LastAccessed = DateTime.Now;
+        await ProtectedLocalStore.SetItemAsync("MyShoppingCart", ShoppingCart);
+    }
+    }
+}

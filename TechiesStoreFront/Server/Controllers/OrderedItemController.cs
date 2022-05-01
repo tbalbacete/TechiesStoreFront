@@ -20,18 +20,6 @@ namespace TechiesStoreFront.Server.Controllers
             _orderedItemService = orderedItemService;
         }
 
-        //May not need
-        private void SetTransactionID(int transactionId)
-        {
-            _orderedItemService.SetTransactionId(transactionId);
-        }
-
-        //may not need
-        private void SetProductId(int productId)
-        {
-            _orderedItemService.SetProductId(productId);
-        }
-
         [HttpPost]
         public async Task<IActionResult> Create(OrderedItemCreate model)
         {

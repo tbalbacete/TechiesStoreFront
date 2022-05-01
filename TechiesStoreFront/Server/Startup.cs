@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,7 @@ namespace TechiesStoreFront.Server
             services.AddScoped<IOrderedItemService, OrderedItemService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICartService, CartService>();
+            services.AddBlazoredLocalStorage();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(

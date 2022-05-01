@@ -43,15 +43,15 @@ else
                             <div class="product-info smart-form">
                                 <div class="row">
                                     <div class="col-md-6 col-sm-6 col-xs-6">
-                                        <a href="/cart/@product.Id" class="btn btn-success">Add to cart</a>
+                                        <button type="submit" class="btn btn-success" @onclick="() => AddToCart(product)">Add to cart</button>
                                     </div>
                                     <div class="col-md-6 col-sm-6 col-xs-6">
                                         <div class="rating">
-                                            <label for="stars-rating-5"><i class="fa fa-star"></i></label>
-                                            <label for="stars-rating-4"><i class="fa fa-star"></i></label>
-                                            <label for="stars-rating-3"><i class="fa fa-star"></i></label>
-                                            <label for="stars-rating-2"><i class="fa fa-star"></i></label>
-                                            <label for="stars-rating-1"><i class="fa fa-star text-primary"></i></label>
+                                            <label for="stars-rating-5"><i class="fa fa-star text-primary"></i></label>
+                                            <label for="stars-rating-4"><i class="fa fa-star text-primary"></i></label>
+                                            <label for="stars-rating-3"><i class="fa fa-star text-primary"></i></label>
+                                            <label for="stars-rating-2"><i class="fa fa-star text-primary"></i></label>
+                                            <label for="stars-rating-1"><i class="fa fa-star"></i></label>
                                         </div>
                                     </div>
                                 </div>
@@ -70,6 +70,8 @@ else
 @code {
     [Parameter]
     public int CategoryId { get; set; }
+    [CascadingParameter]
+    CartStateProvider CartStateProvider { get; set; }
     public IEnumerable<ProductDetail> _products { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -79,5 +81,24 @@ else
     protected override async Task OnParametersSetAsync()
     {
         _products = await PublicClient.Client.GetFromJsonAsync<List<ProductDetail>>($"/api/Product/Category/{CategoryId}");
+    }
+
+    protected async Task AddToCart(ProductDetail productDetail)
+    {
+        //Create new item for cart
+        var item = new ProductDetail
+        {
+            Id = productDetail.Id,
+            Name = productDetail.Name,
+            QuantityInStock = productDetail.QuantityInStock,
+            Description = productDetail.Description,
+            Price = productDetail.Price,
+            CategoryId = productDetail.CategoryId,
+            CategoryName = productDetail.CategoryName
+        };
+        //Add to cart
+        CartStateProvider.ShoppingCart.Items.Add(item);
+        //Save to local storage
+       await CartStateProvider.SaveChangesAsync();
     }
 }

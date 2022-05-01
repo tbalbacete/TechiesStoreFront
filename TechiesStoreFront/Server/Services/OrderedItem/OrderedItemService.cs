@@ -12,8 +12,6 @@ namespace TechiesStoreFront.Server.Services.OrderedItem
     public class OrderedItemService : IOrderedItemService
     {
         private readonly ApplicationDbContext _context;
-        private int _transactionId;
-        private int _itemId;
 
         public OrderedItemService(ApplicationDbContext context)
         {
@@ -24,8 +22,8 @@ namespace TechiesStoreFront.Server.Services.OrderedItem
         {
             var orderedItemEntity = new OrderedItemEntity
             {
-                TransactionId = _transactionId,
-                ItemOrderedId = _itemId,
+                TransactionId = model.TransactionId,
+                ProductId = model.ProductId,
                 QuantityOrdered = model.QuantityOrdered
             };
 
@@ -40,7 +38,7 @@ namespace TechiesStoreFront.Server.Services.OrderedItem
             var orderedItemQuery = _context.OrderedItems.Select(i => new OrderedItemListItem
             {
                 TransactionId = i.TransactionId,
-                ItemOrderedId = i.ItemOrderedId,
+                ProductId = i.ProductId,
                 QuantityOrdered = i.QuantityOrdered
             });
 
@@ -57,14 +55,11 @@ namespace TechiesStoreFront.Server.Services.OrderedItem
             {
                 Id = orderedItemEntity.Id,
                 TransactionId = orderedItemEntity.TransactionId,
-                ItemOrderedId = orderedItemEntity.ItemOrderedId,
+                ProductId = orderedItemEntity.ProductId,
                 QuantityOrdered = orderedItemEntity.QuantityOrdered
             };
 
             return detail;
         }
-
-        public void SetTransactionId(int transactionId) => _transactionId = transactionId;
-        public void SetProductId(int productId) => _itemId = productId;
     }
 }

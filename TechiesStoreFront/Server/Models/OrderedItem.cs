@@ -15,7 +15,7 @@ namespace TechiesStoreFront.Server.Models
         public int TransactionId { get; set; }
         public virtual TransactionEntity Transaction { get; set; }
 
-        public int ItemOrderedId { get; set; }
+        public int ProductId { get; set; }
         public virtual ProductEntity Product { get; set; }
 
         public int QuantityOrdered { get; set; }

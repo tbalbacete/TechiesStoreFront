@@ -13,7 +13,7 @@ namespace TechiesStoreFront.Shared.Models.OrderedItemModels
         public int TransactionId { get; set; }
 
         [Required]
-        public int ItemOrderedId { get; set; }
+        public int ProductId { get; set; }
 
         [Required]
         public int QuantityOrdered { get; set; }

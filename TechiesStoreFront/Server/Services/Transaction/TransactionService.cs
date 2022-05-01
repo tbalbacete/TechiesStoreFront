@@ -24,7 +24,8 @@ namespace TechiesStoreFront.Server.Services.Transaction
             var transactionEntity = new TransactionEntity
             {
                 UserId = _userId,
-                AmountSpent = model.AmountSpent
+                AmountSpent = model.AmountSpent,
+                DateofTransaction = DateTime.Now
             };
 
             _context.Transactions.Add(transactionEntity);
@@ -63,6 +64,22 @@ namespace TechiesStoreFront.Server.Services.Transaction
             return transactionDetail;
         }
 
+        public async Task<TransactionDetail> GetLastTransactionAsync()
+        {
+            var transactionEntity = _context.Transactions.OrderByDescending(t => t.Id).First();
+
+            if (transactionEntity == null) return null;
+
+            var transactionDetail = new TransactionDetail
+            {
+                Id = transactionEntity.Id,
+                AmountSpent = transactionEntity.AmountSpent,
+                DateOfTransaction = transactionEntity.DateofTransaction
+            };
+
+            return transactionDetail;
+        }
+
         public async Task<bool> DeleteTransactionAsync(int transactionId)
         {
             var transactionEntity = await _context.Transactions.FindAsync(transactionId);
@@ -75,5 +92,7 @@ namespace TechiesStoreFront.Server.Services.Transaction
         }
 
         public void SetUserId(string userId) => _userId = userId;
+
+        
     }
 }

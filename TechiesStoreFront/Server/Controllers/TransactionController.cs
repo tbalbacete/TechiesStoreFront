@@ -45,7 +45,7 @@ namespace TechiesStoreFront.Server.Controllers
         public async Task<IActionResult> Create(TransactionCreate model)
         {
             if (model == null) return BadRequest();
-           // if (!SetUserIdInService()) return Unauthorized();
+            if (!SetUserIdInService()) return Unauthorized();
 
             bool wasSuccessful = await _transactionService.CreateTransactionAsync(model);
 
@@ -57,35 +57,45 @@ namespace TechiesStoreFront.Server.Controllers
         [HttpGet]
         public async Task<List<TransactionListItem>> Index()
         {
-            //if (!SetUserIdInService()) return new List<TransactionListItem>();
+            if (!SetUserIdInService()) return new List<TransactionListItem>();
 
-            var notes = await _transactionService.GetAllTransactionsAsync();
+            var transactions = await _transactionService.GetAllTransactionsAsync();
 
-            return notes.ToList();
+            return transactions.ToList();
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Transaction(int id)
         {
-            //if (!SetUserIdInService()) return Unauthorized();
+            if (!SetUserIdInService()) return Unauthorized();
 
-            var note = await _transactionService.GetTransactionByIdAsync(id);
+            var transaction = await _transactionService.GetTransactionByIdAsync(id);
 
-            if (note == null) return NotFound();
+            if (transaction == null) return NotFound();
 
-            return Ok(note);
+            return Ok(transaction);
         }
 
+        [HttpGet("last")]
+        public async Task<TransactionDetail> LastTransaction()
+        {
+            if (!SetUserIdInService()) return null;
 
+            var transaction = await _transactionService.GetLastTransactionAsync();
+
+            if (transaction == null) return null;
+
+            return transaction;
+        }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            //if (!SetUserIdInService()) return Unauthorized();
+            if (!SetUserIdInService()) return Unauthorized();
 
-            var note = await _transactionService.GetTransactionByIdAsync(id);
+            var transaction = await _transactionService.GetTransactionByIdAsync(id);
 
-            if (note == null) return NotFound();
+            if (transaction == null) return NotFound();
 
             bool wasSuccessful = await _transactionService.DeleteTransactionAsync(id);
 

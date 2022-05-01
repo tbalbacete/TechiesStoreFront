@@ -13,5 +13,6 @@ namespace TechiesStoreFront.Server.Services.Transaction
         Task<TransactionDetail> GetTransactionByIdAsync(int transactionId);
         Task<bool> DeleteTransactionAsync(int transactionId);
         void SetUserId(string userId);
+        Task<TransactionDetail> GetLastTransactionAsync();
     }
 }
