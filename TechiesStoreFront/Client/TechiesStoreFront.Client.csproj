@@ -21,7 +21,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\images\" />
     <Folder Include="Pages\Transaction\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\images\navbarLogo.jpg" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,30 @@
+﻿@page "/AddedToCartModal"
+@inject NavigationManager Navigation
+
+<div class="simple-form">
+    <div class="form-group">
+        Your item was added to the cart!
+    </div>
+    <button @onclick="Continue" class="btn btn-success">Continue Shopping</button>
+    <button @onclick="GoToCart" class="btn btn-primary">Go to Cart</button>
+</div>
+
+@code {
+    [CascadingParameter]
+    IModalService Modal { get; set; }
+    [CascadingParameter]
+    BlazoredModalInstance ModalInstance { get; set; }
+
+    async Task Continue()
+    {
+        await ModalInstance.CloseAsync(ModalResult.Cancel());
+    }
+
+    async Task GoToCart()
+    {
+        await ModalInstance.CloseAsync(ModalResult.Cancel());
+
+        Navigation.NavigateTo("Cart");
+    }
+
+}

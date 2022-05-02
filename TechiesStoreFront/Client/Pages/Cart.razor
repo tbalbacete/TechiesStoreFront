@@ -52,7 +52,7 @@ else
                             </td>
                             <td class="text-center text-lg text-medium">$@SetPriceByQuantity(selectedQuantity, product.Price)</td>
                             <td class="text-center text-lg text-medium">$@priceDiscount</td>
-                            <td class="text-center"><button class="remove-from-cart" @onclick="() => RemoveItemFromCart(product)"><i class="fa fa-trash"></i></button></td>
+                            <td class="text-center"><button class="remove-from-cart" @onclick="() => RemoveItemFromCart(product.Id)"><i class="fa fa-trash"></i></button></td>
                         </tr>
                     </tbody>
                 }
@@ -69,7 +69,15 @@ else
         </div>
         <div class="shopping-cart-footer">
             <div class="column"><a class="btn btn-outline-secondary" href="#"><i class="icon-arrow-left"></i>&nbsp;Back to Shopping</a></div>
-            <div class="column"><a class="btn btn-primary" href="cart" data-toast="" data-toast-type="success" data-toast-position="topRight" data-toast-icon="icon-circle-check" data-toast-title="Your cart" data-toast-message="is updated successfully!">Update Cart</a><button class="btn btn-success" @onclick="@(() => { Checkout(_products); Modal.Show<SubmittedOrderModal>("Order Success"); })">Checkout</button></div>
+            @if (ShoppingCart.Items.Count == 0)
+            {
+                IsDisabled = true;
+            }
+            else
+            {
+                IsDisabled = false;
+            }
+            <div class="column"><button class="btn btn-success" @onclick="@(() => { Checkout(_products); Modal.Show<SubmittedOrderModal>("Order Success"); })" disabled="@IsDisabled">Checkout</button></div>
         </div>
     </div>
 }
@@ -84,19 +92,11 @@ else
     public int selectedQuantity { get; set; } = 1;
     public double priceDiscount { get; set; }
     public string couponCodeString { get; set; }
+    public bool IsDisabled { get; set; }
     private TransactionCreate TransactionModel = new();
     private OrderedItemCreate OrderedItemModel = new();
 
     protected override async Task OnInitializedAsync()
-    {
-        ShoppingCart = await ProtectedLocalStore.GetItemAsync<CartModel>("MyShoppingCart");
-
-        if (ShoppingCart is not null)
-        {
-            _products = ShoppingCart.Items;
-        }
-    }
-    protected override async Task OnParametersSetAsync()
     {
         ShoppingCart = await ProtectedLocalStore.GetItemAsync<CartModel>("MyShoppingCart");
 
@@ -132,13 +132,13 @@ else
         return 0;
     }
 
-    async Task RemoveItemFromCart(ProductDetail product)
+    protected async Task RemoveItemFromCart(int key)
     {
-        if (product != null)
+        if (key != 0)
         {
-            CartStateProvider.ShoppingCart.Items.Remove(product);
+            CartStateProvider.ShoppingCart.Items.RemoveAll(p => p.Id == key);
+            _products.RemoveAll(p => p.Id == key);
             await CartStateProvider.SaveChangesAsync();
-            navigation.NavigateTo("cart", true);
         }
     }
 
@@ -174,7 +174,7 @@ else
 
     protected async Task EmptyCart()
     {
+        _products.Clear();
         await ProtectedLocalStore.ClearAsync();
-        navigation.NavigateTo("cart", true);
     }
 }

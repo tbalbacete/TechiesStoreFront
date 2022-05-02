@@ -10,59 +10,61 @@ else
 {
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
-    @foreach (var product in _products)
-    {
-        <div class="container">
-            <div class="col-xs-12 col-md-6 bootstrap snippets bootdeys">
-                <!-- product -->
-                <div class="product-content product-wrap clearfix">
-                    <div class="row">
-                        <div class="col-md-5 col-sm-12 col-xs-12">
-                            <div class="product-image">
-                                <img src="https://via.placeholder.com/194x228/87CEFA" alt="194x228" class="img-responsive">
-                                <span class="tag2 hot">
-                                    HOT
-                                </span>
-                            </div>
-                        </div>
-                        <div class="col-md-7 col-sm-12 col-xs-12">
-                            <div class="product-deatil">
-                                <h5 class="name">
-                                    <a href="#">
-                                        @product.Name @*<span>Category</span>*@
-                                    </a>
-                                </h5>
-                                <p class="price-container">
-                                    <span>$@product.Price</span>
-                                </p>
-                                <span class="tag1"></span>
-                            </div>
-                            <div class="description">
-                                <p>@product.Description</p>
-                            </div>
-                            <div class="product-info smart-form">
-                                <div class="row">
-                                    <div class="col-md-6 col-sm-6 col-xs-6">
-                                        <button type="submit" class="btn btn-success" @onclick="() => AddToCart(product)">Add to cart</button>
+    <div class="row">
+                <div class="container-fluid">
+                    <div class="col-xs-12 col-md-10 bootstrap snippets bootdeys">
+                        <!-- product -->
+        @foreach (var product in _products)
+        {
+                        <div class="product-content product-wrap clearfix">
+                            <div class="row">
+                                <div class="col-md-5 col-sm-12 col-xs-12">
+                                    <div class="product-image">
+                                        <img src="https://via.placeholder.com/388x228/87CEFA" alt="194x228" class="img-responsive">
+                                        <span class="tag2 hot">
+                                            HOT
+                                        </span>
                                     </div>
-                                    <div class="col-md-6 col-sm-6 col-xs-6">
-                                        <div class="rating">
-                                            <label for="stars-rating-5"><i class="fa fa-star text-primary"></i></label>
-                                            <label for="stars-rating-4"><i class="fa fa-star text-primary"></i></label>
-                                            <label for="stars-rating-3"><i class="fa fa-star text-primary"></i></label>
-                                            <label for="stars-rating-2"><i class="fa fa-star text-primary"></i></label>
-                                            <label for="stars-rating-1"><i class="fa fa-star"></i></label>
+                                </div>
+                                <div class="col-md-7 col-sm-12 col-xs-12">
+                                    <div class="product-deatil">
+                                        <h5 class="name">
+                                            <a href="#">
+                                                @product.Name @*<span>Category</span>*@
+                                            </a>
+                                        </h5>
+                                        <p class="price-container">
+                                            <span>$@product.Price</span>
+                                        </p>
+                                        <span class="tag1"></span>
+                                    </div>
+                                    <div class="description">
+                                        <p>@product.Description</p>
+                                    </div>
+                                    <div class="product-info smart-form">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                <button type="submit" class="btn btn-success" @onclick="@(() => { AddToCart(product); Modal.Show<AddedToCartModal>("Added To Cart"); })">Add to cart</button>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                <div class="rating">
+                                                    <label for="stars-rating-5"><i class="fa fa-star text-primary"></i></label>
+                                                    <label for="stars-rating-4"><i class="fa fa-star text-primary"></i></label>
+                                                    <label for="stars-rating-3"><i class="fa fa-star text-primary"></i></label>
+                                                    <label for="stars-rating-2"><i class="fa fa-star text-primary"></i></label>
+                                                    <label for="stars-rating-1"><i class="fa fa-star"></i></label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <!-- end product -->
+        }
                     </div>
                 </div>
-                <!-- end product -->
-            </div>
-        </div>
-    }
+    </div>
 }
 
 
@@ -72,6 +74,8 @@ else
     public int CategoryId { get; set; }
     [CascadingParameter]
     CartStateProvider CartStateProvider { get; set; }
+    [CascadingParameter]
+    public IModalService Modal { get; set; }
     public IEnumerable<ProductDetail> _products { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -99,6 +103,6 @@ else
         //Add to cart
         CartStateProvider.ShoppingCart.Items.Add(item);
         //Save to local storage
-       await CartStateProvider.SaveChangesAsync();
+        await CartStateProvider.SaveChangesAsync();
     }
 }
