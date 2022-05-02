@@ -1,4 +1,5 @@
 using Blazored.LocalStorage;
+using Blazored.Modal;
 using Microsoft.AspNetCore.Components.ProtectedBrowserStorage;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -21,6 +22,7 @@ namespace TechiesStoreFront.Client
             builder.RootComponents.Add<App>("#app");
 
             builder.Services.AddBlazoredLocalStorage();
+            builder.Services.AddBlazoredModal();
 
             //Temp client to allow product and category create without authentication
             builder.Services.AddHttpClient<PublicClient>(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));

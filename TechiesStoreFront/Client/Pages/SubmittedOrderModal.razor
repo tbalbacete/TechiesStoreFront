@@ -1,0 +1,33 @@
+﻿@page "/SubmittedOrderModal"
+@inject NavigationManager Navigation 
+
+<div class="simple-form">
+    <div class="form-group">
+        Your order was submitted succesfully. Press Home to return to the main screen.
+        Press Orders to see your previous orders.
+    </div>
+    <button @onclick="Home" class="btn btn-success">Home</button>
+    <button @onclick="Orders" class="btn btn-primary">Orders</button>
+</div>
+
+@code {
+    [CascadingParameter]
+    IModalService Modal { get; set; }
+    [CascadingParameter]
+    BlazoredModalInstance ModalInstance { get; set; }
+
+    async Task Home()
+    {
+        ModalInstance.CloseAsync(ModalResult.Cancel());
+
+        Navigation.NavigateTo("/");
+    }
+
+    async Task Orders()
+    {
+        ModalInstance.CloseAsync(ModalResult.Cancel());
+
+        Navigation.NavigateTo("Orders");
+    }
+
+}
