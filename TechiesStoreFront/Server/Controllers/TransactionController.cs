@@ -57,9 +57,17 @@ namespace TechiesStoreFront.Server.Controllers
         [HttpGet]
         public async Task<List<TransactionListItem>> Index()
         {
-            if (!SetUserIdInService()) return new List<TransactionListItem>();
-
             var transactions = await _transactionService.GetAllTransactionsAsync();
+
+            return transactions.ToList();
+        }
+
+        [HttpGet("byUser")]
+        public async Task<List<TransactionListItem>> TransactionsByUser()
+        {
+            if (!SetUserIdInService()) return null;
+
+            var transactions = await _transactionService.GetAllTransactionsForUserAsync();
 
             return transactions.ToList();
         }

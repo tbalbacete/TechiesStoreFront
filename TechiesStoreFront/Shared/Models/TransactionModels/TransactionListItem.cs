@@ -9,7 +9,7 @@ namespace TechiesStoreFront.Shared.Models.TransactionModels
     public class TransactionListItem
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public double AmountSpent { get; set; }
         public DateTime DateOfTransaction { get; set; }
     }

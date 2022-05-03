@@ -10,6 +10,7 @@ namespace TechiesStoreFront.Server.Services.Transaction
     {
         Task<bool> CreateTransactionAsync(TransactionCreate model);
         Task<IEnumerable<TransactionListItem>> GetAllTransactionsAsync();
+        Task<IEnumerable<TransactionListItem>> GetAllTransactionsForUserAsync();
         Task<TransactionDetail> GetTransactionByIdAsync(int transactionId);
         Task<bool> DeleteTransactionAsync(int transactionId);
         void SetUserId(string userId);

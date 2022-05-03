@@ -1,0 +1,43 @@
+﻿@page "/Transactions/index"
+@using TechiesStoreFront.Shared.Models.TransactionModels
+@inject PublicClient PublicClient
+
+<h3>Transaction Index</h3>
+
+@if (_transactions == null)
+{
+    <p>Attempting to load products...</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>UserId</th>
+                <th>AmountSpent</th>
+                <th>DateofTransaction</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var transaction in _transactions)
+            {
+                <tr>
+                    <td><strong>@transaction.Id</strong></td>
+                    <td>@transaction.UserId</td>
+                    <td>@transaction.AmountSpent</td>
+                    <td>@transaction.DateOfTransaction</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IEnumerable<TransactionListItem> _transactions;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _transactions = await PublicClient.Client.GetFromJsonAsync<List<TransactionListItem>>("api/Transaction");
+    }
+}

@@ -118,7 +118,7 @@ else
             total += p.Price;
         }
 
-        return total;
+        return Math.Round(total, 2, MidpointRounding.AwayFromZero);
     }
     private double SetPriceByQuantity(int quantity, double price)
     {
@@ -144,6 +144,7 @@ else
 
     protected async Task Checkout(List<ProductDetail> products)
     {
+        double total = 0;
         TransactionModel.AmountSpent = 0;
         if (products is null)
         {
@@ -152,8 +153,10 @@ else
 
         foreach (var p in products)
         {
-            TransactionModel.AmountSpent += p.Price;
+            total += p.Price;
         }
+
+        TransactionModel.AmountSpent = Math.Round(total, 2, MidpointRounding.AwayFromZero);
 
         var createTransaction = await http.PostAsJsonAsync<TransactionCreate>("api/Transaction", TransactionModel);
         if (createTransaction.IsSuccessStatusCode)

@@ -35,12 +35,25 @@ namespace TechiesStoreFront.Server.Services.Transaction
         }
 
 
-        public async Task<IEnumerable<TransactionListItem>> GetAllTransactionsAsync()
+        public async Task<IEnumerable<TransactionListItem>> GetAllTransactionsForUserAsync()
         {
             var transactionQuery = _context.Transactions.Where(t => t.UserId == _userId)
                 .Select(t => new TransactionListItem
                 {
                     Id = t.Id,
+                    AmountSpent = t.AmountSpent,
+                    DateOfTransaction = t.DateofTransaction
+                });
+
+            return await transactionQuery.ToListAsync();
+        }
+
+        public async Task<IEnumerable<TransactionListItem>> GetAllTransactionsAsync()
+        {
+            var transactionQuery = _context.Transactions.Select(t => new TransactionListItem
+                {
+                    Id = t.Id,
+                    UserId = t.UserId,
                     AmountSpent = t.AmountSpent,
                     DateOfTransaction = t.DateofTransaction
                 });

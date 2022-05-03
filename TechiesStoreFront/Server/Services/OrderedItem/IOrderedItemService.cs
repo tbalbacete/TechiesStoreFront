@@ -10,6 +10,10 @@ namespace TechiesStoreFront.Server.Services.OrderedItem
     {
         Task<bool> CreateOrderedItemAsync(OrderedItemCreate model);
         Task<IEnumerable<OrderedItemListItem>> GetAllOrderedItemsAsync();
+        Task<IEnumerable<OrderedItemListItem>> GetAllOrderedItemsByTransactionIdAsync(int transactionId);
         Task<OrderedItemDetail> GetOrderedItemByIdAsync(int itemId);
+        Task<bool> UpdateOrderedItemAsync(OrderedItemEdit model);
+        Task<bool> DeleteOrderedItemAsync(int id);
+
     }
 }
