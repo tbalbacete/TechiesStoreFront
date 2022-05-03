@@ -1,0 +1,6 @@
+﻿body {
+    background-color: rgb(25, 86, 180);
+    color: white;
+}
+
+.card {display: inline-block;}

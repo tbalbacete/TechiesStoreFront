@@ -26,16 +26,7 @@ namespace TechiesStoreFront.Server.Controllers
             return Ok(categories);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Category(int id)
-        {
-            var category = await _categoryService.GetCategoryByIdAsync(id);
-
-            if (category == null) return NotFound();
-
-            return Ok(category);
-        }
-
+        //POST: api/Category
         [HttpPost]
         public async Task<IActionResult> Create(CategoryCreate model)
         {
@@ -47,6 +38,18 @@ namespace TechiesStoreFront.Server.Controllers
             return UnprocessableEntity();
         }
 
+        //GET: api/Category/1
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Category(int id)
+        {
+            var category = await _categoryService.GetCategoryByIdAsync(id);
+
+            if (category == null) return NotFound();
+
+            return Ok(category);
+        }
+
+        //PUT: api/Category/edit/1
         [HttpPut("edit/{id}")]
         public async Task<IActionResult> Edit(int id, CategoryEdit model)
         {
@@ -59,6 +62,7 @@ namespace TechiesStoreFront.Server.Controllers
             return BadRequest();
         }
 
+        //DELETE: api/Category/1
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

@@ -29,7 +29,7 @@ else
                                 <div class="pull-right"><span class="badge badge-info">Pending</span></div>
                                 <span><strong>Order #@transaction.Id</strong></span> <br />
                                 Total: $@transaction.AmountSpent <br />
-                                <a data-placement="top" class="btn btn-success btn-xs fa fa-bars" href="#" title="Details"></a>
+                                <a data-placement="top" class="btn btn-success btn-xs fa fa-bars" @onclick="@(() => ShowItemsModal(transaction.Id))" title="Details"></a>
                             </div>
                             <div class="col-md-12">order made on: @transaction.DateOfTransaction.ToShortDateString()</div>
                         </div>
@@ -37,6 +37,8 @@ else
                 </div>
             }
         </div>
+        <br />
+        <br />
         <div class="panel-footer">Have an issue with your order? Contact us at techiesservice@gmail.com</div>
     </div>
 </div>
@@ -44,6 +46,8 @@ else
 
 
 @code {
+    [CascadingParameter]
+    public IModalService Modal { get; set; }
     public IEnumerable<TransactionListItem> _transactions { get; set; }
     public IEnumerable<OrderedItemListItem> _orderedItems { get; set; }
 
@@ -52,8 +56,11 @@ else
         _transactions = await http.GetFromJsonAsync<List<TransactionListItem>>("/api/Transaction/byUser");
     }
 
-    protected async Task GetOrderedItems(int transactionId)
+    void ShowItemsModal(int transactionId)
     {
-        _orderedItems = await http.GetFromJsonAsync<List<OrderedItemListItem>>($"/api/OrderedItem/getAll/{transactionId}");
+        var parameters = new ModalParameters();
+        parameters.Add(nameof(OrderedItemsModal.TransactionId), transactionId);
+
+        Modal.Show<OrderedItemsModal>("Ordered Items", parameters);
     }
 }

@@ -41,6 +41,7 @@ namespace TechiesStoreFront.Server.Controllers
             return true;
         }
 
+        //POST: api/Transaction
         [HttpPost]
         public async Task<IActionResult> Create(TransactionCreate model)
         {
@@ -54,6 +55,7 @@ namespace TechiesStoreFront.Server.Controllers
             else return UnprocessableEntity();
         }
 
+        //GET: api/Transaction
         [HttpGet]
         public async Task<List<TransactionListItem>> Index()
         {
@@ -62,6 +64,7 @@ namespace TechiesStoreFront.Server.Controllers
             return transactions.ToList();
         }
 
+        //GET: api/Transaction/byUser
         [HttpGet("byUser")]
         public async Task<List<TransactionListItem>> TransactionsByUser()
         {
@@ -72,6 +75,7 @@ namespace TechiesStoreFront.Server.Controllers
             return transactions.ToList();
         }
 
+        //GET: api/Transaction/1
         [HttpGet("{id}")]
         public async Task<IActionResult> Transaction(int id)
         {
@@ -84,6 +88,7 @@ namespace TechiesStoreFront.Server.Controllers
             return Ok(transaction);
         }
 
+        //GET: api/Transaction/last
         [HttpGet("last")]
         public async Task<TransactionDetail> LastTransaction()
         {
@@ -96,6 +101,7 @@ namespace TechiesStoreFront.Server.Controllers
             return transaction;
         }
 
+        //DELETE: api/Transaction/1
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

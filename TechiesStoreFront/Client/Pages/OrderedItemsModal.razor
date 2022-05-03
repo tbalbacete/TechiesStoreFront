@@ -1,0 +1,64 @@
+﻿@page "/OrderedItemsModal"
+@attribute [Authorize]
+@inject HttpClient http 
+@inject NavigationManager Navigation
+@using TechiesStoreFront.Shared.Models.OrderedItemModels
+@using TechiesStoreFront.Shared.Models.ProductModels
+  
+@if (_orderedItems == null)
+{
+    <p>Loading order...</p>
+}
+else
+{ 
+<div class="container">
+    <div class="row">
+        @foreach (var oi in _orderedItems)
+        {
+            <div class="col-md-6">
+                <div class="card-deck">
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="/images/products/product@(oi.ProductId).jpg" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">@GetProductName(oi.ProductId)</h5>
+                            <p class="card-text">@GetProductDescription(oi.ProductId)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+}
+
+@code {
+    [CascadingParameter]
+    BlazoredModalInstance ModalInstance { get; set; }
+    [Parameter]
+    public int TransactionId { get; set; }
+    public List<OrderedItemListItem> _orderedItems { get; set; }
+    public List<ProductListItem> _products { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _orderedItems = await http.GetFromJsonAsync<List<OrderedItemListItem>>($"/api/OrderedItem/getAll/{TransactionId}");
+        _products = await http.GetFromJsonAsync<List<ProductListItem>>("/api/Product");
+    }
+
+    protected string GetProductName(int productId)
+    {
+        var product = _products.Find(p => p.Id == productId);
+
+        return product.Name;
+    }
+
+    protected string GetProductDescription(int productId)
+    {
+        var product = _products.Find(p => p.Id == productId);
+
+        return product.Description;
+    }
+
+
+
+}
