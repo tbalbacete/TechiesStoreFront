@@ -4,44 +4,45 @@
 @using TechiesStoreFront.Shared.Models.TransactionModels
 @using TechiesStoreFront.Shared.Models.OrderedItemModels
 @using TechiesStoreFront.Shared.Models.ProductModels
+@using TechiesStoreFront.Client.Pages.Modals
 
-@if(_transactions == null)
+@if (_transactions == null)
 {
     <p>Loading orders...</p>
 }
 
 else
 {
-<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
-<div class="container bootdey">
-    <div class="panel panel-default panel-order">
-        <div class="panel-heading">
-            <strong>Order history</strong>
-            <hr/>
-        </div>
-        <div class="panel-body">
-            @foreach (var transaction in _transactions)
-            {
-                <div class="row">
-                    <div class="col-md-11">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="pull-right"><span class="badge badge-info">Pending</span></div>
-                                <span><strong>Order #@transaction.Id</strong></span> <br />
-                                Total: $@transaction.AmountSpent <br />
-                                <a data-placement="top" class="btn btn-success btn-xs fa fa-bars" @onclick="@(() => ShowItemsModal(transaction.Id))" title="Details"></a>
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
+    <div class="container bootdey">
+        <div class="panel panel-default panel-order">
+            <div class="panel-heading">
+                <strong>Order history</strong>
+                <hr />
+            </div>
+            <div class="panel-body">
+                @foreach (var transaction in _transactions)
+                {
+                    <div class="row">
+                        <div class="col-md-11">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="pull-right"><span class="badge badge-info">Pending</span></div>
+                                    <span><strong>Order #@transaction.Id</strong></span> <br />
+                                    Total: $@transaction.AmountSpent <br />
+                                    <a data-placement="top" class="btn btn-success btn-xs fa fa-bars" @onclick="@(() => ShowItemsModal(transaction.Id))" title="Details"></a>
+                                </div>
+                                <div class="col-md-12">order made on: @transaction.DateOfTransaction.ToShortDateString()</div>
                             </div>
-                            <div class="col-md-12">order made on: @transaction.DateOfTransaction.ToShortDateString()</div>
                         </div>
                     </div>
-                </div>
-            }
+                }
+            </div>
+            <br />
+            <br />
+            <div class="panel-footer">Have an issue with your order? Contact us at techiesservice@gmail.com</div>
         </div>
-        <br />
-        <br />
-        <div class="panel-footer">Have an issue with your order? Contact us at techiesservice@gmail.com</div>
     </div>
-</div>
 }
 
 
@@ -60,7 +61,8 @@ else
     {
         var parameters = new ModalParameters();
         parameters.Add(nameof(OrderedItemsModal.TransactionId), transactionId);
+        var options = new ModalOptions { ContentScrollable = true };
 
-        Modal.Show<OrderedItemsModal>("Ordered Items", parameters);
+        Modal.Show<OrderedItemsModal>("Ordered Items", parameters, options);
     }
 }

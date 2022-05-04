@@ -18,14 +18,14 @@
 
     async Task Home()
     {
-        ModalInstance.CloseAsync(ModalResult.Cancel());
+        await ModalInstance.CloseAsync(ModalResult.Cancel());
 
         Navigation.NavigateTo("/");
     }
 
     async Task Orders()
     {
-        ModalInstance.CloseAsync(ModalResult.Cancel());
+        await ModalInstance.CloseAsync(ModalResult.Cancel());
 
         Navigation.NavigateTo("Orders");
     }

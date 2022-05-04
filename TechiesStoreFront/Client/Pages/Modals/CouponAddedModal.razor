@@ -1,0 +1,14 @@
+﻿@page "/CouponAddedModal"
+
+<div class="simple-form">
+    <div class="form-group">
+        Your coupon was successfully added!
+    </div>
+</div>
+
+@code {
+    [CascadingParameter]
+    IModalService Modal { get; set; }
+    [CascadingParameter]
+    BlazoredModalInstance ModalInstance { get; set; }
+}

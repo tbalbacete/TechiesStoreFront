@@ -1,0 +1,14 @@
+﻿@page "/CouponFailedModal"
+
+<div class="simple-form">
+    <div class="form-group">
+        I'm sorry. That is not a valid coupon code. Please try again.
+    </div>
+</div>
+
+@code {
+    [CascadingParameter]
+    IModalService Modal { get; set; }
+    [CascadingParameter]
+    BlazoredModalInstance ModalInstance { get; set; }
+}
