@@ -1,0 +1,81 @@
+﻿@page "/ProductDetailModal"
+@inject PublicClient PublicClient
+@using TechiesStoreFront.Shared.Models.ProductModels
+@if (Product == null)
+{
+    <p>Loading product</p>
+}
+else
+{
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
+    <div class="container">
+        <!-- product -->
+        <div class="product-content product-wrap clearfix product-deatil">
+            <div class="row">
+                <div class="col-md-5 col-sm-12 col-xs-12">
+                    <div class="product-image">
+                        <img src="/images/products/product@(Product.Id).jpg" />
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-md-offset-1 col-sm-12 col-xs-12">
+                    <h2 class="name">
+                        @Product.Name
+                        <small>Product by <a>TechWares</a></small>
+                        <i class="fa fa-star fa-2x text-primary"></i>
+                        <i class="fa fa-star fa-2x text-primary"></i>
+                        <i class="fa fa-star fa-2x text-primary"></i>
+                        <i class="fa fa-star fa-2x text-primary"></i>
+                        <i class="fa fa-star fa-2x text-muted"></i>
+                        <span class="fa fa-2x"><h5>(109) Votes</h5></span>
+                    </h2>
+                    <hr />
+                    <h3 class="price-container">
+                        $@Product.Price
+                        <small>*includes tax</small>
+                    </h3>
+                    <div class="certified">
+                        <ul>
+                            <li>
+                                <p>Delivery time<span>7 Working Days</span></p>
+                            </li>
+                            <li>
+                                <p>Certified<span>Quality Assured</span></p>
+                            </li>
+                            <li>
+                                <p>Limited Warranty<span>Included</span></p>
+                            </li>
+                        </ul>
+                    </div>
+                    <hr />
+                    <div class="description">
+                        <h5>@Product.Description</h5>
+                    </div>
+                    <hr />
+                </div>
+            </div>
+        </div>
+        <!-- end product -->
+    </div>
+
+
+}
+
+@code {
+    [CascadingParameter]
+    BlazoredModalInstance ModalInstance { get; set; }
+    [Parameter]
+    public int ProductId { get; set; }
+    public ProductDetail Product { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Product = await PublicClient.Client.GetFromJsonAsync<ProductDetail>($"api/Product/{ProductId}");
+    }
+
+    private double SetWarrantyPrice(double productPrice)
+    {
+        double output = productPrice * .15;
+        return Math.Round(output, 2, MidpointRounding.AwayFromZero);
+    }
+}

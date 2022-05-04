@@ -168,7 +168,8 @@ select.form-control {
         .shopping-cart .product-item .product-title > a:hover,
         .wishlist-table .product-item .product-title > a:hover,
         .order-table .product-item .product-title > a:hover {
-            color: #0da9ef
+            color: #0da9ef;
+            cursor: pointer;
         }
 
     .shopping-cart .product-item .product-title small,

@@ -38,9 +38,9 @@ else
                         <tr>
                             <td>
                                 <div class="product-item">
-                                    <a class="product-thumb" href="#"><img src="/images/products/product@(product.Id).jpg" alt="Product"></a>
+                                    <a class="product-thumb"><img src="/images/products/product@(product.Id).jpg" alt="Product"></a>
                                     <div class="product-info">
-                                        <h4 class="product-title"><a href="#">@product.Name</a></h4>
+                                        <h4 class="product-title"><a @onclick="() => ShowDetailModal(product.Id)">@product.Name</a></h4>
                                     </div>
                                 </div>
                             </td>
@@ -254,5 +254,14 @@ else
     {
         _products.Clear();
         await ProtectedLocalStore.ClearAsync();
+    }
+
+    void ShowDetailModal(int productId)
+    {
+        var parameters = new ModalParameters();
+        parameters.Add(nameof(ProductDetailModal.ProductId), productId);
+        var options = new ModalOptions { ContentScrollable = true };
+
+        Modal.Show<ProductDetailModal>("Product Details", parameters, options);
     }
 }
