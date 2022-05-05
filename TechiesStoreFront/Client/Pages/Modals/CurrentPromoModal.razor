@@ -1,0 +1,15 @@
+﻿@page "/CurrentPromoModal"
+@inject NavigationManager Navigation
+
+<div class="simple-form">
+    <div class="form-group">
+        <p>Celebrate our launch with us! Use Coupon Code: tech2022 for 10% off your purchase!</p>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter]
+    IModalService Modal { get; set; }
+    [CascadingParameter]
+    BlazoredModalInstance ModalInstance { get; set; }
+}

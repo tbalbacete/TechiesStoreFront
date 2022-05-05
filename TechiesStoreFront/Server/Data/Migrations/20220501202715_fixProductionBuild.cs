@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
+using TechiesStoreFront.Server.Data;
+using TechiesStoreFront.Server.Models;
 
 namespace TechiesStoreFront.Server.Data.Migrations
 {

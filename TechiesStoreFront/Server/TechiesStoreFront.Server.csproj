@@ -27,4 +27,10 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.16" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="blazor_wasm_cert.pfx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

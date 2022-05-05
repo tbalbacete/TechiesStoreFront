@@ -345,10 +345,7 @@ namespace TechiesStoreFront.Server.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ItemOrderedId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("QuantityOrdered")
@@ -474,7 +471,9 @@ namespace TechiesStoreFront.Server.Data.Migrations
                 {
                     b.HasOne("TechiesStoreFront.Server.Models.ProductEntity", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("TechiesStoreFront.Server.Models.TransactionEntity", "Transaction")
                         .WithMany()
