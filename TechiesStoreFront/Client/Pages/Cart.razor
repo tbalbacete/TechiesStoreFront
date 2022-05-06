@@ -253,7 +253,8 @@ else
     protected async Task EmptyCart()
     {
         _products.Clear();
-        await ProtectedLocalStore.ClearAsync();
+        CartStateProvider.ShoppingCart.Items.Clear();
+        await CartStateProvider.SaveChangesAsync();
     }
 
     void ShowDetailModal(int productId)
