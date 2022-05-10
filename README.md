@@ -19,7 +19,7 @@ README template from: https://github.com/othneildrew/Best-README-Template/blob/m
   <p align="center">
     Store-Front Blazor Application
     <br />
-    <a href="https://github.com/tbalbacete/TechiesStoreFront"><strong>Explore the docs »</strong></a>
+    <a href="https://techiesstorefront.azurewebsites.net"><strong>Explore the site! »</strong></a>
     <br />
     <br />
     <a href="https://github.com/github_username/repo_name">View Demo</a>
